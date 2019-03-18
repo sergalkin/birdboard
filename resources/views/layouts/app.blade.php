@@ -19,14 +19,14 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
-<body class="bg-grey-light">
+<body class="bg-grey-lighter">
 <div id="app">
-    <nav class="bg-white">
+    <nav class="bg-white section">
         <div class="container mx-auto">
-            <div class="flex justify-between items-center py-2">
+            <div class="flex justify-between items-center py-1">
                 <h1>
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        <img src="/images/logo.svg" alt="Birdboard">
+                    <a class="navbar-brand" href="{{ url('/projects') }}">
+                        <img src="/images/logo.svg" alt="Birdboard" class="relative" style="top: 2px">
                     </a>
                 </h1>
 
@@ -45,20 +45,18 @@
                             @endif
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                                         document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                          style="display: none;">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
                                 </div>
@@ -70,7 +68,7 @@
         </div>
     </nav>
 
-    <main class="container mx-auto py-4">
+    <main class="container mx-auto py-6 section">
         @yield('content')
     </main>
 </div>
