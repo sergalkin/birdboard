@@ -22,6 +22,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Project extends Model
 {
+    use RecordsActivity;
+
     /**
      * @var array
      */
@@ -60,15 +62,6 @@ class Project extends Model
         return $this->tasks()->create(compact('body'));
     }
 
-
-    /**
-     * @param string $description
-     */
-    public function recordActivity($description)
-    {
-        $this->activity()->create(['description' => $description]);
-    }
-
     /**
      * The activity feed for the project.
      *
@@ -76,6 +69,6 @@ class Project extends Model
      */
     public function activity()
     {
-        return $this->hasMany(Activity::class);
+        return $this->hasMany(Activity::class)->latest();
     }
 }

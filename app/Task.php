@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Task extends Model
 {
+    use RecordsActivity;
+
     /**
      * @var array
      */
@@ -24,23 +26,25 @@ class Task extends Model
      * @var array
      */
     protected $casts = ['completed' => 'boolean'];
-    
+
+    protected static $recordableEvents = ['created', 'deleted'];
+
     /**
-     *
+     * return void
      */
     public function complete()
     {
         $this->update(['completed' => true]);
-        $this->project->recordActivity('completed_task');
+        $this->recordActivity('completed_task');
     }
 
     /**
-     *
+     * return void
      */
     public function incomplete()
     {
         $this->update(['completed' => false]);
-        $this->project->recordActivity('uncompleted_task');
+        $this->recordActivity('uncompleted_task');
     }
 
     /**
