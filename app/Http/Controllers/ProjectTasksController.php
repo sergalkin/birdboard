@@ -6,6 +6,10 @@ use App\Project;
 use App\Task;
 use Illuminate\Http\Request;
 
+/**
+ * Class ProjectTasksController
+ * @package App\Http\Controllers
+ */
 class ProjectTasksController extends Controller
 {
     /**
@@ -34,12 +38,9 @@ class ProjectTasksController extends Controller
     {
         $this->authorize('update', $task->project);
 
-        request()->validate(['body' => 'required']);
+        $task->update(request()->validate(['body' => 'required']));
 
-        $task->update([
-            'body' => request('body'),
-            'completed' => request()->has('completed')
-        ]);
+        request('completed') ? $task->complete() : $task->incomplete();
 
         return redirect($project->path());
     }
