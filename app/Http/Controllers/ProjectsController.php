@@ -12,7 +12,7 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        $projects = auth()->user()->projects;
+        $projects = auth()->user()->attendingProjects();
 
         return view('projects.index', compact('projects'));
     }
@@ -64,6 +64,20 @@ class ProjectsController extends Controller
         $project->update($this->validationRequest());
 
         return redirect($project->path());
+    }
+
+    /**
+     * Destroy the project.
+     *
+     * @param  Project $project
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function destroy(Project $project)
+    {
+        $this->authorize('update', $project);
+        $project->delete();
+        return redirect('/projects');
     }
 
     /**

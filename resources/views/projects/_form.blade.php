@@ -26,4 +26,4 @@
     </div>
 </div>
 
-@include('_erors')
+@include('_errors')
