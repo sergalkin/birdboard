@@ -38,11 +38,15 @@ class ProjectsController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return mixed
      */
     public function store()
     {
         $project = auth()->user()->projects()->create($this->validationRequest());
+
+        if(request()->wantsJson()) {
+            return ['message' => $project->path()];
+        }
 
         return redirect($project->path());
     }
