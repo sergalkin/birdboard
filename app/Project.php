@@ -63,6 +63,15 @@ class Project extends Model
     }
 
     /**
+     * @param array $tasks
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function addTasks($tasks)
+    {
+        return $this->tasks()->createMany($tasks);
+    }
+
+    /**
      * The activity feed for the project.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -72,11 +81,17 @@ class Project extends Model
         return $this->hasMany(Activity::class)->latest();
     }
 
+    /**
+     * @param User $user
+     */
     public function invite(User $user)
     {
         return $this->members()->attach($user);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function members()
     {
         return $this->belongsToMany(User::class, 'project_members')->withTimestamps();
