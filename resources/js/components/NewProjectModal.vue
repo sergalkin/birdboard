@@ -8,19 +8,19 @@
                         <label for="title" class="text-sm block mb-2">Title</label>
                         <input type="text" id="title"
                                class="border py-2 px-2 text-xs block w-full rounded"
-                               :class="errors.title ? 'border-error' : 'border-muted-light'"
+                               :class="form.errors.title ? 'border-error' : 'border-muted-light'"
                                v-model="form.title">
-                        <span class="text-xs italic text-error" v-if="errors.title"
-                              v-text="errors.title[0]"></span>
+                        <span class="text-xs italic text-error" v-if="form.errors.title"
+                              v-text="form.errors.title[0]"></span>
                     </div>
                     <div class="mb-4">
                         <label for="description" class="text-sm block mb-2">Description</label>
                         <textarea id="description"
                                   class="border py-2 px-2 text-xs block w-full rounded"
-                                  :class="errors.description ? 'border-error': 'border-muted-light'"
+                                  :class="form.errors.description ? 'border-error': 'border-muted-light'"
                                   rows="7" v-model="form.description"></textarea>
-                        <span class="text-xs italic text-error" v-if="errors.description"
-                              v-text="errors.description[0]"></span>
+                        <span class="text-xs italic text-error" v-if="form.errors.description"
+                              v-text="form.errors.description[0]"></span>
                     </div>
                 </div>
                 <div class="flex-1 ml-4">
@@ -42,39 +42,39 @@
                 </div>
             </div>
             <footer class="flex justify-end">
-                <button type="button" class="button is-outlined mr-4" @click="$modal.hide('new-project')">Cancel</button>
+                <button type="button" class="button is-outlined mr-4" @click="$modal.hide('new-project') & form.reset()">Cancel
+                </button>
                 <button type="submit" class="button">Create Project</button>
             </footer>
         </form>
     </modal>
 </template>
 <script>
+    import BirdBoardForm from './BirdBoardForm'
+
     export default {
         data() {
             return {
-                form: {
+                form: new BirdBoardForm({
                     title: '',
                     description: '',
                     tasks: [
                         {body: ''},
                     ]
-                },
-                errors: {}
+                })
             }
         },
 
         methods: {
             addTask() {
-                this.form.tasks.push({value: ''})
+                this.form.tasks.push({body: ''})
             },
             submit() {
-                axios.post('/projects', this.form)
-                    .then(response => {
-                        location = response.data.message;
-                    })
-                    .catch(error => {
-                        this.errors = error.response.data.errors;
-                    });
+                if (!this.form.tasks[0].body) {
+                    delete this.form.originalData.tasks;
+                }
+                this.form.submit('/projects')
+                    .then(response => location = response.data.message);
             }
         }
     }
